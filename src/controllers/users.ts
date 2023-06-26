@@ -6,7 +6,6 @@ import { generateResponse } from '../utils'
 const prisma = new PrismaClient()
 
 export const getAllUsers = async (req: Request, res: Response) => {
-
     try {
         const users = await prisma.user.findMany()
         res.json(generateResponse(true, users))
