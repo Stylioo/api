@@ -7,7 +7,7 @@ const prisma = new PrismaClient()
 
 export const getAllUsers = async (req: Request, res: Response) => {
     try {
-        const users = await prisma.user.findMany()
+        const users = await prisma.customer.findMany()
         res.json(generateResponse(true, users))
     } catch (err) {
         res.json(generateResponse(false, null, err))
@@ -16,7 +16,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 
 export const getUserById = async (req: Request, res: Response) => {
     try {
-        const user = await prisma.user.findUnique({
+        const user = await prisma.customer.findUnique({
             where: { uid: req.params.id }
         })
         res.json(generateResponse(true, user))
@@ -28,12 +28,14 @@ export const getUserById = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
     try {
-        const user = await prisma.user.create({
+
+        const user = await prisma.customer.create({
             data: {
                 uid: uuidv4(),
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
-                user_type: req.body.user_type
+                email: req.body.email,
+                contact_no: req.body.contact_no,
             }
         })
         res.json(generateResponse(true, user))
@@ -45,12 +47,13 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
     try {
-        const updatedUser = await prisma.user.update({
+        const updatedUser = await prisma.customer.update({
             where: { uid: req.params.id },
             data: {
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
-                user_type: req.body.user_type
+                email: req.body.email,
+                contact_no: req.body.contact_no,
             }
         })
         res.json(generateResponse(true, updatedUser))
@@ -62,7 +65,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
     try {
-        const deletedUser = await prisma.user.delete({
+        const deletedUser = await prisma.customer.delete({
             where: { uid: req.params.id }
         })
         res.json(generateResponse(true, deletedUser))

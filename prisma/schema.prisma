@@ -7,15 +7,53 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model user {
-  uid        String @id
-  first_name String
-  last_name  String
-  user_type  String
+// Customer =======================================
+
+model Customer {
+  uid            String          @id
+  email          String          @unique
+  first_name     String
+  last_name      String
+  contact_no     String          @unique
+  address_line_1 String?
+  address_line_2 String?
+  city           String?
+  district       String?
+  customer_auth  Customer_Auth[]
 }
 
-model login_credentials {
-  uid      String @id
-  email    String @unique
+model Unregistered_Customer {
+  contact_no     String @id
+  email          String @unique
+  first_name     String
+  last_name      String
+  address_line_1 String?
+  address_line_2 String?
+  city           String?
+  district       String?
+}
+
+model Customer_Auth {
+  uid      String   @id
+  username String   @unique
   password String
+  customer Customer @relation(fields: [uid], references: [uid])
+}
+
+// Employee =======================================
+
+model Employee {
+  uid           String          @id
+  email         String          @unique
+  first_name    String
+  last_name     String
+  type          String
+  employee_auth Employee_Auth[]
+}
+
+model Employee_Auth {
+  uid      String   @id
+  username String   @unique
+  password String
+  employee Employee @relation(fields: [uid], references: [uid])
 }
