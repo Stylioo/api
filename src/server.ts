@@ -10,12 +10,16 @@ app.use(express.static('./build'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+    res.send('hello');
+})
+
 app.get('/health', (req, res) => {
     res.status(200).send('I am alive and healthy');
 })
 
-app.use('/', homeRoutes);
-app.use('/customers', customerRoutes);
+// app.use('/', homeRoutes);
+// app.use('/customers', customerRoutes);
 
 
 app.listen(5400, () => {
