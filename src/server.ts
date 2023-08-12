@@ -5,8 +5,14 @@ import customerRoutes from './routes/customers';
 
 const app = express();
 
+app.use(express.static('./build'))
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get('/health', (req, res) => {
+    res.status(200).send('I am alive and healthy');
+})
 
 app.use('/', homeRoutes);
 app.use('/customers', customerRoutes);
