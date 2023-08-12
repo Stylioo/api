@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "nodemon",
     "start": "ts-node src/server.ts",
-    "start:prod": "npm run build && node ./dist/src/server.js",
-    "build": "npx tsc && node ./dist/src/server.js"
+    "start:prod": "node ./dist/src/server.js",
+    "build": "npx tsc"
   },
   "keywords": [],
   "author": "Janithpm",
