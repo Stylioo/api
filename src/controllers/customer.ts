@@ -5,7 +5,7 @@ import { generateResponse } from '../utils'
 
 const prisma = new PrismaClient()
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const fetchAllCustomers = async (req: Request, res: Response) => {
     try {
         const users = await prisma.customer.findMany()
         res.json(generateResponse(true, users))
@@ -14,7 +14,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
     }
 }
 
-export const getUserById = async (req: Request, res: Response) => {
+export const findCustomerById = async (req: Request, res: Response) => {
     try {
         const user = await prisma.customer.findUnique({
             where: { uid: req.params.id }
@@ -26,7 +26,7 @@ export const getUserById = async (req: Request, res: Response) => {
     }
 }
 
-export const createUser = async (req: Request, res: Response) => {
+export const createCustomer = async (req: Request, res: Response) => {
     try {
 
         const user = await prisma.customer.create({
@@ -46,7 +46,7 @@ export const createUser = async (req: Request, res: Response) => {
     }
 }
 
-export const updateUser = async (req: Request, res: Response) => {
+export const updateCustomer = async (req: Request, res: Response) => {
     try {
         const updatedUser = await prisma.customer.update({
             where: { uid: req.params.id },
@@ -64,7 +64,7 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 }
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteCustomer = async (req: Request, res: Response) => {
     try {
         const deletedUser = await prisma.customer.delete({
             where: { uid: req.params.id }

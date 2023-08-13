@@ -15,7 +15,7 @@ model Customer {
   password       String
   first_name     String
   last_name      String
-  contact_no     String        @unique
+  contact_no     String?       @unique
   address_line_1 String?
   address_line_2 String?
   city           String?
@@ -42,12 +42,12 @@ model Employee {
   password       String
   first_name     String
   last_name      String
-  contact_no     String        @unique
+  contact_no     String?       @unique
   address_line_1 String?
   address_line_2 String?
   city           String?
   district       String?
-  type           role
+  role           role
   Appointment    Appointment[]
 }
 
@@ -61,7 +61,7 @@ enum role {
 // Service =======================================
 
 model Service {
-  id           String        @id @default(uuid())
+  id           String        @id
   name         String
   description  String?
   price        Float
@@ -73,7 +73,7 @@ model Service {
 // Appointment =======================================
 
 model Appointment {
-  id          String    @id @default(uuid())
+  id          String    @id
   date        DateTime
   status      String
   customer    Customer  @relation(fields: [customer_id], references: [uid])
