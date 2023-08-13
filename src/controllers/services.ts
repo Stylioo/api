@@ -2,6 +2,8 @@ import { Request, Response } from "express"
 import { PrismaClient } from '@prisma/client'
 import { generateResponse } from '../utils'
 
+import { v4 as uuidv4 } from 'uuid'
+
 const prisma = new PrismaClient()
 
 export const getAllServices = async (req: Request, res: Response) => {
@@ -30,6 +32,7 @@ export const createService = async (req: Request, res: Response) => {
 
         const service = await prisma.service.create({
             data: {
+                id: uuidv4(),
                 name: req.body.name,
                 description: req.body.description,
                 price: req.body.price,
