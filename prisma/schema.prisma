@@ -10,17 +10,17 @@ datasource db {
 // Customer =======================================
 
 model Customer {
-  uid            String        @id
-  email          String        @unique
+  uid            String  @id
+  email          String  @unique
   password       String
   first_name     String
   last_name      String
-  contact_no     String?       @unique
+  contact_no     String? @unique
   address_line_1 String?
   address_line_2 String?
   city           String?
   district       String?
-  Appointment    Appointment[]
+  // Appointment    Appointment[]
 }
 
 model Unregistered_Customer {
@@ -37,22 +37,27 @@ model Unregistered_Customer {
 // Employee =======================================
 
 model Employee {
-  uid            String        @id
-  email          String        @unique
+  uid            String   @id
+  email          String   @unique
   password       String
   first_name     String
   last_name      String
-  contact_no     String?       @unique
+  contact_no     String?  @unique
   address_line_1 String?
   address_line_2 String?
   city           String?
   district       String?
   role           role
-  Appointment    Appointment[]
+  gender         String?
+  doj            String?
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  // Appointment    Appointment[]
 }
 
 enum role {
   ADMIN
+  OWNER
   MANAGER
   BEAUTICIAN
   RECEPTIONIST
@@ -61,24 +66,35 @@ enum role {
 // Service =======================================
 
 model Service {
-  id           String        @id
-  name         String
-  description  String?
-  price        Float
-  duration     Int
-  status       String
-  Appointments Appointment[]
+  id          String   @id
+  name        String
+  category    String
+  description String?  @db.Text
+  price       Float
+  duration    String
+  status      String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  // Appointments Appointment[]
 }
 
 // Appointment =======================================
 
 model Appointment {
-  id          String    @id
-  date        DateTime
-  status      String
-  customer    Customer  @relation(fields: [customer_id], references: [uid])
-  customer_id String
-  employee    Employee? @relation(fields: [employee_id], references: [uid])
-  employee_id String?
-  services    Service[]
+  id            String  @id
+  date          String
+  status        String
+  services      String
+  beautician    String
+  beautician_id String
+  customer      String
+  customer_id   String
+  totalPrice    Float
+  startTime     String?
+  duration      String?
+  // customer    Customer  @relation(fields: [customer_id], references: [uid])
+  // customer_id String
+  // employee    Employee? @relation(fields: [employee_id], references: [uid])
+  // employee_id String?
+  // services    Service[]
 }

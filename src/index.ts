@@ -9,6 +9,8 @@ import authRoutes from './routes/auth'
 import homeRoutes from './routes/home'
 import customerRoutes from './routes/customer'
 import employeeRoutes from './routes/employee'
+import serviceRoutes from './routes/service'
+import appointmentRoutes from './routes/appointment'
 
 const app = express()
 
@@ -23,8 +25,10 @@ app.get('/health', (req, res) => {
 
 app.use('/', homeRoutes)
 app.use('/auth', authRoutes)
-app.use('/customer', protect, customerRoutes)
-app.use('/employee', protect, employeeRoutes)
+app.use('/customer', customerRoutes)
+app.use('/employee', employeeRoutes)
+app.use('/service', serviceRoutes)
+app.use('/appointment', appointmentRoutes)
 
 
 

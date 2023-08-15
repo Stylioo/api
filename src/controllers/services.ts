@@ -8,7 +8,13 @@ const prisma = new PrismaClient()
 
 export const getAllServices = async (req: Request, res: Response) => {
     try {
-        const services = await prisma.service.findMany()
+        // find all service sort decesding order buy updatedTime
+
+        const services = await prisma.service.findMany({
+            orderBy: {
+                updated_at: 'desc'
+            }
+        })
         res.json(generateResponse(true, services))
     } catch (err) {
         res.json(generateResponse(false, null, err))
@@ -28,14 +34,15 @@ export const getServiceById = async (req: Request, res: Response) => {
 }
 
 export const createService = async (req: Request, res: Response) => {
-    try {
 
+    try {
         const service = await prisma.service.create({
             data: {
                 id: uuidv4(),
+                category: req.body.category,
                 name: req.body.name,
                 description: req.body.description,
-                price: req.body.price,
+                price: parseFloat(req.body.price),
                 duration: req.body.duration,
                 status: req.body.status,
             }
@@ -71,6 +78,16 @@ export const deleteService = async (req: Request, res: Response) => {
         const deletedService = await prisma.service.delete({
             where: { id: req.params.id }
         })
+        res.json(generateResponse(true, deletedService))
+    }
+    catch (err) {
+        res.json(generateResponse(false, null, err))
+    }
+}
+
+export const deleteAll = async (req: Request, res: Response) => {
+    try {
+        const deletedService = await prisma.service.deleteMany()
         res.json(generateResponse(true, deletedService))
     }
     catch (err) {
