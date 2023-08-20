@@ -1,6 +1,6 @@
 import express from "express"
 
-import { login, register, logout } from "../controllers/auth"
+import { signup, signin, refresh, signout } from "../controllers/auth"
 
 const router = express.Router()
 
@@ -9,8 +9,9 @@ router.get('/health', (req, res) => {
 })
 
 
-router.post('/login', login)
-router.post('/register', register)
-router.get('/logout', logout)
+router.post('/signup', signup)
+router.post('/signin', signin)
+router.post('/refresh', refresh)
+router.get('/signout', signout)
 
 export default router
