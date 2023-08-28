@@ -8,11 +8,9 @@
     "start:dev": "ts-node src/index.ts",
     "start:prod": "npm run build && node ./dist/src/index.js",
     "build:prod": "npx tsc",
-    
-    "prepare": "npx prisma generate",
     "dev": "tsc && node dist/src/index.js",
     "start": "node dist/src/index.js",
-    "postinstall": "tsc"
+    "postinstall": "npx prisma generate && tsc "
   },
   "keywords": [],
   "author": "Janithpm",
