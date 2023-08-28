@@ -9,7 +9,7 @@ router.get('/health', (req, res) => {
     res.status(200).json('employee route is alive and healthy');
 })
 
-router.use(protect)
+// router.use(protect)
 
 router.get('/', fetchAllEmployees)
 router.post('/', createEmployee)
