@@ -1,1 +1,1 @@
-worker: npm start
+worker: npx prisma deploy && npm start
