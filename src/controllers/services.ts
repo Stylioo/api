@@ -50,6 +50,7 @@ export const createService = async (req: Request, res: Response) => {
         res.json(generateResponse(true, service))
     }
     catch (err) {
+        console.log(err);
         res.json(generateResponse(false, null, err))
     }
 }
