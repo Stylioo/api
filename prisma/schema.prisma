@@ -108,32 +108,29 @@ enum Status {
 }
 
 model Product {
-  id                 String    @id
+  id                 String   @id
   name               String
   image              String?
-  description        String?   @db.Text
+  description        String?  @db.Text
   brand              String
   category           String
   type               String
-  price              Float
-  status             Status    @default(OUT_STOCK)
+  status             Status   @default(OUT_STOCK)
   volume             Float?
   volume_unit        String?
   low_stock_quantity Int?
-  barcode            barcode[]
-  supplier           Supplier? @relation(fields: [supplierId], references: [id])
-  supplierId         String?
   Stock              Stock[]
-  created_at         DateTime  @default(now())
-  updated_at         DateTime  @updatedAt
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
 }
 
 // barcode =======================================
 
 model barcode {
   code       String  @id
-  product    Product @relation(fields: [product_id], references: [id])
   product_id String
+  Stock      Stock?  @relation(fields: [stockId], references: [id])
+  stockId    String?
 }
 
 // Stock =======================================
@@ -142,8 +139,12 @@ model Stock {
   product           Product   @relation(fields: [product_id], references: [id])
   product_id        String
   quantity          Int
+  unit_price        Float
   manufacturer_date DateTime?
   expiry_date       DateTime?
+  supplier          Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId        String?
+  barcode           barcode[]
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
 }
@@ -151,12 +152,12 @@ model Stock {
 // Supplier =======================================
 
 model Supplier {
-  id         String    @id
+  id         String   @id
   name       String
-  contact_no String?   @unique
+  contact_no String?  @unique
   address    String?
-  email      String?   @unique
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  products   Product[]
+  email      String?  @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Stock      Stock[]
 }

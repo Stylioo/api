@@ -16,9 +16,6 @@ export const getAllProducts = async (req: Request, res: Response) => {
             take: Number(forPage),
             orderBy: {
                 updated_at: 'asc'
-            },
-            include: {
-                supplier: true
             }
         })
 
@@ -54,9 +51,6 @@ export const searchProducts = async (req: Request, res: Response) => {
             orderBy: {
                 created_at: 'asc'
             },
-            include: {
-                supplier: true
-            }
         })
 
 
