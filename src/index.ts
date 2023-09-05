@@ -13,6 +13,7 @@ import customerRoutes from './routes/customer'
 import employeeRoutes from './routes/employee'
 import serviceRoutes from './routes/service'
 import appointmentRoutes from './routes/appointment'
+import productRoutes from './routes/product'
 
 const app = express()
 
@@ -31,10 +32,11 @@ app.use('/customer', customerRoutes)
 app.use('/employee', employeeRoutes)
 app.use('/service', serviceRoutes)
 app.use('/appointment', appointmentRoutes)
+app.use('/product', productRoutes)
 
 
 const port = config.server.port
 
 app.listen(port, () => {
-    console.log('Server is running on port 5400.')
+    console.log(`Server is running on port ${port}`)
 })

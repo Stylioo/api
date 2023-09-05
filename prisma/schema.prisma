@@ -98,3 +98,65 @@ model Appointment {
   // employee_id String?
   // services    Service[]
 }
+
+// products =======================================
+
+enum Status {
+  IN_STOCK
+  OUT_STOCK
+  LOW_STOCK
+}
+
+model Product {
+  id                 String    @id
+  name               String
+  image              String?
+  description        String?   @db.Text
+  brand              String
+  category           String
+  type               String
+  price              Float
+  status             Status    @default(OUT_STOCK)
+  volume             Float?
+  volume_unit        String?
+  low_stock_quantity Int?
+  barcode            barcode[]
+  Supplier           Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId         String?
+  Stock              Stock[]
+  created_at         DateTime  @default(now())
+  updated_at         DateTime  @updatedAt
+}
+
+// barcode =======================================
+
+model barcode {
+  code       String  @id
+  product    Product @relation(fields: [product_id], references: [id])
+  product_id String
+}
+
+// Stock =======================================
+model Stock {
+  id                String    @id
+  product           Product   @relation(fields: [product_id], references: [id])
+  product_id        String
+  quantity          Int
+  manufacturer_date DateTime?
+  expiry_date       DateTime?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+}
+
+// Supplier =======================================
+
+model Supplier {
+  id         String    @id
+  name       String
+  contact_no String?   @unique
+  address    String?
+  email      String?   @unique
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  products   Product[]
+}
