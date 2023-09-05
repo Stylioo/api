@@ -95,7 +95,7 @@ export const getProductById = async (req: Request, res: Response) => {
         const product = await prisma.product.findUnique({
             where: { id: req.params.id },
             include: {
-                Stock: {
+                stock: {
                     include: {
                         supplier: true
                     }
