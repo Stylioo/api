@@ -16,6 +16,17 @@ export const getAllProducts = async (req: Request, res: Response) => {
             take: Number(forPage),
             orderBy: {
                 updated_at: 'asc'
+            },
+            select: {
+                id: true,
+                name: true,
+                image: true,
+                status: true,
+                category: true,
+                brand: true,
+                type: true,
+                volume: true,
+                volume_unit: true,
             }
         })
 
@@ -51,6 +62,18 @@ export const searchProducts = async (req: Request, res: Response) => {
             orderBy: {
                 created_at: 'asc'
             },
+            select: {
+                id: true,
+                name: true,
+                image: true,
+                status: true,
+                category: true,
+                brand: true,
+                type: true,
+                volume: true,
+                volume_unit: true,
+            }
+
         })
 
 
@@ -70,7 +93,14 @@ export const searchProducts = async (req: Request, res: Response) => {
 export const getProductById = async (req: Request, res: Response) => {
     try {
         const product = await prisma.product.findUnique({
-            where: { id: req.params.id }
+            where: { id: req.params.id },
+            include: {
+                Stock: {
+                    include: {
+                        supplier: true
+                    }
+                }
+            }
         })
 
         if (product)
