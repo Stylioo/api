@@ -121,7 +121,7 @@ model Product {
   volume_unit        String?
   low_stock_quantity Int?
   barcode            barcode[]
-  Supplier           Supplier? @relation(fields: [supplierId], references: [id])
+  supplier           Supplier? @relation(fields: [supplierId], references: [id])
   supplierId         String?
   Stock              Stock[]
   created_at         DateTime  @default(now())

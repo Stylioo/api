@@ -9,13 +9,16 @@ export const getAllProducts = async (req: Request, res: Response) => {
     try {
         const forPage = req.query.forPage as string || await prisma.product.count()
         const page = req.query.page as string || "0"
-        
-        
+
+
         const products = await prisma.product.findMany({
             skip: Number(forPage) * Number(page),
             take: Number(forPage),
             orderBy: {
                 updated_at: 'asc'
+            },
+            include: {
+                supplier: true
             }
         })
 
@@ -52,7 +55,7 @@ export const searchProducts = async (req: Request, res: Response) => {
                 created_at: 'asc'
             },
             include: {
-                Supplier: true
+                supplier: true
             }
         })
 
