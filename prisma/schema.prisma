@@ -119,7 +119,7 @@ model Product {
   volume             Float?
   volume_unit        String?
   low_stock_quantity Int?
-  Stock              Stock[]
+  stock              Stock[]
   created_at         DateTime @default(now())
   updated_at         DateTime @updatedAt
 }
