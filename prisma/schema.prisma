@@ -129,8 +129,8 @@ model Product {
 model barcode {
   code       String  @id
   product_id String
-  Stock      Stock?  @relation(fields: [stockId], references: [id])
-  stockId    String?
+  Stock      Stock?  @relation(fields: [stock_id], references: [id])
+  stock_id    String?
 }
 
 // Stock =======================================
@@ -142,8 +142,8 @@ model Stock {
   unit_price        Float
   manufacturer_date DateTime?
   expiry_date       DateTime?
-  supplier          Supplier? @relation(fields: [supplierId], references: [id])
-  supplierId        String?
+  supplier          Supplier? @relation(fields: [supplier_id], references: [id])
+  supplier_id        String?
   barcode           barcode[]
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
@@ -160,5 +160,5 @@ model Supplier {
   email          String?  @unique
   created_at     DateTime @default(now())
   updated_at     DateTime @updatedAt
-  Stock          Stock[]
+  stock          Stock[]
 }
