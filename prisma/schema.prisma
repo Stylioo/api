@@ -152,12 +152,13 @@ model Stock {
 // Supplier =======================================
 
 model Supplier {
-  id         String   @id
-  name       String
-  contact_no String?  @unique
-  address    String?
-  email      String?  @unique
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  Stock      Stock[]
+  id             String   @id
+  name           String
+  contact_no     String?  @unique
+  address_line_1 String?
+  address_line_2 String?
+  email          String?  @unique
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  Stock          Stock[]
 }
