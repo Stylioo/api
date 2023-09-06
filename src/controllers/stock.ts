@@ -26,7 +26,7 @@ export const getAllStock = async (req: Request, res: Response) => {
     }
 }
 
-export const createstock = async (req: Request, res: Response) => {
+export const createStock = async (req: Request, res: Response) => {
     try {
 
         const stock = await prisma.stock.create({

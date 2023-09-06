@@ -1,10 +1,10 @@
 import express from 'express'
-import { } from '../controllers/stock'
+import { getAllStock, createStock } from '../controllers/stock'
+
 
 const router = express.Router()
 
-router.get('/',)
-router.get('/:id',)
-router.post('/',)
+router.get('/', getAllStock)
+router.post('/', createStock)
 
 export default router
