@@ -15,6 +15,7 @@ import serviceRoutes from './routes/service'
 import appointmentRoutes from './routes/appointment'
 import productRoutes from './routes/product'
 import supplierRoutes from './routes/supplier'
+import stockRoutes from './routes/stock'
 
 const app = express()
 
@@ -35,6 +36,7 @@ app.use('/service', serviceRoutes)
 app.use('/appointment', appointmentRoutes)
 app.use('/product', productRoutes)
 app.use('/supplier', supplierRoutes)
+app.use('/stock', stockRoutes)
 
 
 const port = config.server.port
