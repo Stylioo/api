@@ -28,15 +28,14 @@ export const getAllStock = async (req: Request, res: Response) => {
 
 export const createStock = async (req: Request, res: Response) => {
     try {
-
         const stock = await prisma.stock.create({
             data: {
                 id: v4().substring(0, 15),
                 product_id: req.body.product_id,
-                quantity: req.body.quantity,
-                unit_price: req.body.unit_price,
-                manufacturer_date: req.body.manufacturer_date,
-                expiry_date: req.body.expiry_date,
+                quantity: parseFloat(req.body.quantity),
+                unit_price: parseFloat(req.body.unit_price),
+                manufacturer_date: new Date(req.body.manufacturer_date),
+                expiry_date: new Date(req.body.expiry_date),
                 supplier_id: req.body.supplier_id,
             }
         })
