@@ -10,6 +10,8 @@ export const getAllProducts = async (req: Request, res: Response) => {
         const forPage = req.query.forPage as string || await prisma.product.count()
         const page = req.query.page as string || "0"
 
+        const quantityOnly = req.query.quantityOnly as string || 'false'
+
 
         const products = await prisma.product.findMany({
             skip: Number(forPage) * Number(page),
@@ -27,7 +29,12 @@ export const getAllProducts = async (req: Request, res: Response) => {
                 type: true,
                 volume: true,
                 volume_unit: true,
-            }
+                stock: quantityOnly === 'true' ? {
+                    select: {
+                        quantity: true,
+                    }
+                } : false
+            },
         })
 
         if (products?.length > 0)
@@ -47,6 +54,9 @@ export const searchProducts = async (req: Request, res: Response) => {
         const term = req.query.term as string || ""
         const forPage = req.query.forPage as string || await prisma.product.count()
         const page = req.query.page as string || "0"
+
+        const quantityOnly = req.query.quantityOnly as string || 'false'
+
 
         const products = await prisma.product.findMany({
             where: {
@@ -72,6 +82,11 @@ export const searchProducts = async (req: Request, res: Response) => {
                 type: true,
                 volume: true,
                 volume_unit: true,
+                stock: quantityOnly === 'true' ? {
+                    select: {
+                        quantity: true,
+                    }
+                } : false
             }
 
         })
