@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 
 import { generateResponse } from '../utils'
+import { v4 } from 'uuid'
 
 const prisma = new PrismaClient()
 
@@ -17,7 +18,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
             skip: Number(forPage) * Number(page),
             take: Number(forPage),
             orderBy: {
-                updated_at: 'asc'
+                updated_at: 'desc'
             },
             select: {
                 id: true,
@@ -71,7 +72,7 @@ export const searchProducts = async (req: Request, res: Response) => {
             skip: Number(forPage) * Number(page),
             take: Number(forPage),
             orderBy: {
-                created_at: 'asc'
+                created_at: 'desc'
             },
             select: {
                 id: true,
@@ -128,5 +129,31 @@ export const getProductById = async (req: Request, res: Response) => {
     } catch (err) {
         console.log(err)
         res.status(500).json(generateResponse(false, null, err))
+    }
+}
+
+export const createProduct = async (req: Request, res: Response) => {
+    try {
+
+        const product = await prisma.product.create({
+            data: {
+                id: v4().substring(0, 15),
+                name: req.body.name,
+                brand: req.body.brand,
+                image: 'beautyProduct.jpg',
+                low_stock_quantity: parseInt(req.body.low_stock_quantity),
+                category: req.body.category,
+                type: req.body.type,
+                volume: parseFloat(req.body.volume),
+                volume_unit: req.body.volume_unit
+            }
+        })
+
+        res.status(200).json(generateResponse(true, product))
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(generateResponse(false, null, err))
+
     }
 }
