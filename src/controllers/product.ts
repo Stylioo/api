@@ -29,6 +29,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
                 type: true,
                 volume: true,
                 volume_unit: true,
+                low_stock_quantity: true,
                 stock: quantityOnly === 'true' ? {
                     select: {
                         quantity: true,
@@ -82,6 +83,7 @@ export const searchProducts = async (req: Request, res: Response) => {
                 type: true,
                 volume: true,
                 volume_unit: true,
+                low_stock_quantity: true,
                 stock: quantityOnly === 'true' ? {
                     select: {
                         quantity: true,
