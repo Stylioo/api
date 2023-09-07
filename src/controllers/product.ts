@@ -157,3 +157,32 @@ export const createProduct = async (req: Request, res: Response) => {
 
     }
 }
+
+export const deleteProduct = async (req: Request, res: Response) => {
+    try {
+
+        const productId = req.params.id;
+
+        const deleteStockResult = await prisma.stock.deleteMany({
+            where: {
+                product_id: productId,
+            },
+        });
+
+        const deleteProductResult = await prisma.product.delete({
+            where: {
+                id: productId,
+            },
+        });
+
+        res.status(200).json(generateResponse(true, {
+            product: deleteProductResult,
+            deletedStock: deleteStockResult,
+        }));
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).json(generateResponse(false, null, err))
+
+    }
+}

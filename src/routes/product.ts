@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllProducts, getProductById, searchProducts, createProduct } from "../controllers/product"
+import { getAllProducts, getProductById, searchProducts, createProduct, deleteProduct } from "../controllers/product"
 
 const router = express.Router()
 
@@ -8,9 +8,10 @@ router.get('/health', (req, res) => {
 })
 
 router.get('/', getAllProducts)
+router.post('/', createProduct)
 router.get('/search', searchProducts)
 router.get('/:id', getProductById)
-router.post('/', createProduct)
+router.delete('/:id', deleteProduct)
 
 
 export default router
