@@ -42,6 +42,7 @@ model Employee {
   password       String
   first_name     String
   last_name      String
+  image          String?
   contact_no     String?  @unique
   address_line_1 String?
   address_line_2 String?
@@ -130,7 +131,7 @@ model barcode {
   code       String  @id
   product_id String
   Stock      Stock?  @relation(fields: [stock_id], references: [id])
-  stock_id    String?
+  stock_id   String?
 }
 
 // Stock =======================================
@@ -143,7 +144,7 @@ model Stock {
   manufacturer_date DateTime?
   expiry_date       DateTime?
   supplier          Supplier? @relation(fields: [supplier_id], references: [id])
-  supplier_id        String?
+  supplier_id       String?
   barcode           barcode[]
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
