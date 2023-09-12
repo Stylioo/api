@@ -43,6 +43,7 @@ model Employee {
   first_name     String
   last_name      String
   image          String?
+  dob            DateTime?
   contact_no     String?        @unique
   address_line_1 String?
   address_line_2 String?
