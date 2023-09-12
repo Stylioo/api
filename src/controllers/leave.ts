@@ -22,7 +22,7 @@ export const getAllLeaves = async (req: Request, res: Response) => {
         if (leaveRequest?.length > 0)
             res.status(200).json(generateResponse(true, leaveRequest))
         else
-            res.status(404).json(generateResponse(false, null, 'No leave srequest found'))
+            res.status(404).json(generateResponse(false, null, 'No leave request found'))
 
     } catch (err) {
         console.log(err)
