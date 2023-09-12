@@ -82,11 +82,12 @@ model LeaveRequest {
   id          String             @id
   employee    Employee           @relation(fields: [employee_id], references: [uid])
   employee_id String
-  startDate   DateTime
-  endDate     DateTime
+  start_date  DateTime
+  end_date    DateTime
   status      LeaveRequestStatus @default(PENDING)
   reason      String?
-  createdAt   DateTime           @default(now())
+  created_at  DateTime           @default(now())
+  updated_at  DateTime           @updatedAt
 }
 
 enum LeaveRequestStatus {
@@ -121,8 +122,8 @@ model Appointment {
   beautician_id String
   customer      String
   customer_id   String
-  totalPrice    Float
-  startTime     String?
+  total_price   Float
+  start_time    String?
   duration      String?
   // customer    Customer  @relation(fields: [customer_id], references: [uid])
   // customer_id String
