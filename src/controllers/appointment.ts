@@ -44,8 +44,8 @@ export const createAppointment = async (req: Request, res: Response) => {
             customer: req.body.customer.first_name,
             beautician_id: req.body.beautician.uid,
             beautician: req.body.beautician.first_name,
-            startTime: req.body.startTime,
-            totalPrice: req.body.totalPrice,
+            start_time: req.body.startTime,
+            total_price: req.body.totalPrice,
             services: req.body.services[0].name
         }
 
