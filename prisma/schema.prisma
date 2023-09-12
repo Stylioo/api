@@ -37,13 +37,13 @@ model Unregistered_Customer {
 // Employee =======================================
 
 model Employee {
-  uid            String   @id
-  email          String   @unique
+  uid            String         @id
+  email          String         @unique
   password       String
   first_name     String
   last_name      String
   image          String?
-  contact_no     String?  @unique
+  contact_no     String?        @unique
   address_line_1 String?
   address_line_2 String?
   city           String?
@@ -51,8 +51,11 @@ model Employee {
   role           role
   gender         String?
   doj            String?
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
+  leave_count    Int            @default(0)
+  status         employeeStatus @default(INACTIVE)
+  created_at     DateTime       @default(now())
+  updated_at     DateTime       @updatedAt
+  leave_request  LeaveRequest[]
   // Appointment    Appointment[]
 }
 
@@ -62,6 +65,33 @@ enum role {
   MANAGER
   BEAUTICIAN
   RECEPTIONIST
+}
+
+enum employeeStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  RESIGNED
+  ON_LEAVE
+  WORKING
+  ON_BREAK
+}
+
+model LeaveRequest {
+  id          String             @id
+  employee    Employee           @relation(fields: [employee_id], references: [uid])
+  employee_id String
+  startDate   DateTime
+  endDate     DateTime
+  status      LeaveRequestStatus @default(PENDING)
+  reason      String?
+  createdAt   DateTime           @default(now())
+}
+
+enum LeaveRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }
 
 // Service =======================================
@@ -135,6 +165,7 @@ model barcode {
 }
 
 // Stock =======================================
+
 model Stock {
   id                String    @id
   product           Product   @relation(fields: [product_id], references: [id])
