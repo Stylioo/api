@@ -8,10 +8,6 @@ router.get('/health', (req, res) => {
 })
 
 router.get('/', getAllLeaves)
-router.post('/',)
-router.get('/search',)
-router.get('/:id',)
-router.delete('/:id',)
 
 
 export default router
