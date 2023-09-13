@@ -37,30 +37,35 @@ model Unregistered_Customer {
 // Employee =======================================
 
 model Employee {
-  uid            String         @id
-  email          String         @unique
-  password       String
-  first_name     String
-  last_name      String
-  image          String?
-  dob            DateTime?
-  contact_no     String?        @unique
-  address_line_1 String?
-  address_line_2 String?
-  city           String?
-  district       String?
-  role           role
-  gender         String?
-  doj            String?
-  leave_count    Int            @default(0)
-  status         employeeStatus @default(INACTIVE)
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
-  leave_request  LeaveRequest[]
+  uid                   String         @id
+  email                 String         @unique
+  password              String
+  salutation            Salutation?    @default(NONE)
+  first_name            String
+  last_name             String
+  image                 String?
+  dob                   DateTime?
+  gender                String?
+  contact_no            String?        @unique
+  address_line_1        String?
+  address_line_2        String?
+  city                  String?
+  district              String?
+  role                  Role
+  doj                   String?
+  fixed_salary          Float?
+  commission            Float?
+  hourly_rate           Float?
+  working_hours_per_day Float?
+  leave_count           Int            @default(0)
+  status                EmployeeStatus @default(INACTIVE)
+  created_at            DateTime       @default(now())
+  updated_at            DateTime       @updatedAt
+  leave_request         LeaveRequest[]
   // Appointment    Appointment[]
 }
 
-enum role {
+enum Role {
   ADMIN
   OWNER
   MANAGER
@@ -68,7 +73,7 @@ enum role {
   RECEPTIONIST
 }
 
-enum employeeStatus {
+enum EmployeeStatus {
   ACTIVE
   INACTIVE
   SUSPENDED
@@ -76,6 +81,13 @@ enum employeeStatus {
   ON_LEAVE
   WORKING
   ON_BREAK
+}
+
+enum Salutation {
+  NONE
+  MR
+  MS
+  MRS
 }
 
 model LeaveRequest {
