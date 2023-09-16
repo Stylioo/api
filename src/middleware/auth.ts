@@ -16,7 +16,7 @@ const protect = async (req: Request, res: Response, next: NextFunction) => {
             if (typeof decoded !== "string") {
 
                 const user = await prisma.customer.findUnique({
-                    where: { uid: decoded.id }
+                    where: { id: decoded.id }
                 })
 
                 if (user) {
