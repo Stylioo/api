@@ -9,7 +9,7 @@ export const getAllSuppliers = async (req: Request, res: Response) => {
     try {
 
         const nameAndIdOnly = req.query.nameAndIdOnly as string || 'false'
-        
+
         const suppliers = await prisma.supplier.findMany({
             orderBy: {
                 created_at: 'asc'
@@ -56,7 +56,6 @@ export const createSupplier = async (req: Request, res: Response) => {
     try {
         const supplier = await prisma.supplier.create({
             data: {
-                id: v4().substring(0, 15),
                 name: req.body.name,
                 contact_no: req.body.contact_no,
                 address_line_1: req.body.address_line_1,

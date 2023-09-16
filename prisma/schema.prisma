@@ -10,7 +10,7 @@ datasource db {
 // Customer =======================================
 
 model Customer {
-  uid            String  @id
+  id             String  @id @default(cuid())
   email          String  @unique
   password       String
   first_name     String
@@ -37,31 +37,32 @@ model Unregistered_Customer {
 // Employee =======================================
 
 model Employee {
-  uid                   String         @id
-  email                 String         @unique
-  password              String
-  salutation            Salutation?    @default(NONE)
-  first_name            String
-  last_name             String
-  image                 String?
-  dob                   DateTime?
-  gender                String?
-  contact_no            String?        @unique
-  address_line_1        String?
-  address_line_2        String?
-  city                  String?
-  district              String?
-  role                  Role
-  doj                   String?
-  fixed_salary          Float?
-  commission            Float?
-  hourly_rate           Float?
-  working_hours_per_day Float?
-  leave_count           Int            @default(0)
-  status                EmployeeStatus @default(INACTIVE)
-  created_at            DateTime       @default(now())
-  updated_at            DateTime       @updatedAt
-  leave_request         LeaveRequest[]
+  id                 String          @id @default(cuid())
+  email              String          @unique
+  password           String
+  salutation         String?         @default("NONE")
+  first_name         String
+  last_name          String
+  image              String?
+  dob                DateTime?
+  gender             String?
+  contact_no         String?         @unique
+  address_line_1     String?
+  address_line_2     String?
+  city               String?
+  district           String?
+  role               String
+  doj                DateTime?
+  fixed_salary       Float?
+  commission         Float?
+  hourly_charge_rate Float?
+  working_hours      Float?
+  leave_count        Int             @default(0)
+  status             EmployeeStatus  @default(INACTIVE)
+  created_at         DateTime        @default(now())
+  updated_at         DateTime        @updatedAt
+  leave_request      LeaveRequest[]
+  qualifications     Qualification[]
   // Appointment    Appointment[]
 }
 
@@ -91,8 +92,8 @@ enum Salutation {
 }
 
 model LeaveRequest {
-  id          String             @id
-  employee    Employee           @relation(fields: [employee_id], references: [uid])
+  id          String             @id @default(cuid())
+  employee    Employee           @relation(fields: [employee_id], references: [id])
   employee_id String
   start_date  DateTime
   end_date    DateTime
@@ -108,10 +109,43 @@ enum LeaveRequestStatus {
   REJECTED
 }
 
+// qualification =======================================
+
+model Qualification {
+  id            String    @id @default(cuid())
+  qualification String
+  institute     String
+  start_date    DateTime?
+  end_date      DateTime?
+  employee      Employee  @relation(fields: [employee_id], references: [id])
+  employee_id   String
+}
+
+// permission =======================================
+// model Permission {
+//   id          String   @id @default(cuid())
+//   name        String
+//   slug        String
+//   description String?
+//   created_at  DateTime @default(now())
+//   updated_at  DateTime @updatedAt
+//   roles       role[]
+// }
+
+// model role {
+//   id          String       @id @default(cuid())
+//   name        String
+//   slug        String
+//   description String?
+//   created_at  DateTime     @default(now())
+//   updated_at  DateTime     @updatedAt
+//   permissions Permission[]
+// }
+
 // Service =======================================
 
 model Service {
-  id          String   @id
+  id          String   @id @default(cuid())
   name        String
   category    String
   description String?  @db.Text
@@ -126,7 +160,7 @@ model Service {
 // Appointment =======================================
 
 model Appointment {
-  id            String  @id
+  id            String  @id @default(cuid())
   date          String
   status        String
   services      String
@@ -153,7 +187,7 @@ enum Status {
 }
 
 model Product {
-  id                 String   @id
+  id                 String   @id @default(cuid())
   name               String
   image              String?
   description        String?  @db.Text
@@ -172,7 +206,7 @@ model Product {
 // barcode =======================================
 
 model barcode {
-  code       String  @id
+  code       String  @id @default(cuid())
   product_id String
   Stock      Stock?  @relation(fields: [stock_id], references: [id])
   stock_id   String?
@@ -181,7 +215,7 @@ model barcode {
 // Stock =======================================
 
 model Stock {
-  id                String    @id
+  id                String    @id @default(cuid())
   product           Product   @relation(fields: [product_id], references: [id])
   product_id        String
   quantity          Int
@@ -198,7 +232,7 @@ model Stock {
 // Supplier =======================================
 
 model Supplier {
-  id             String   @id
+  id             String   @id @default(cuid())
   name           String
   contact_no     String?  @unique
   address_line_1 String?

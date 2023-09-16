@@ -38,7 +38,6 @@ export const createService = async (req: Request, res: Response) => {
     try {
         const service = await prisma.service.create({
             data: {
-                id: uuidv4(),
                 category: req.body.category,
                 name: req.body.name,
                 description: req.body.description,

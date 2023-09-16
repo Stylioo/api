@@ -137,7 +137,6 @@ export const createProduct = async (req: Request, res: Response) => {
 
         const product = await prisma.product.create({
             data: {
-                id: v4().substring(0, 15),
                 name: req.body.name,
                 brand: req.body.brand,
                 image: 'beautyProduct.jpg',

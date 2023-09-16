@@ -37,7 +37,6 @@ export const createAppointment = async (req: Request, res: Response) => {
     const servicesId = req.body.services.map((service: any) => service.uid)
     try {
         const dbData = {
-            id: uuidv4(),
             date: req.body.date,
             status: "pending",
             customer_id: req.body.customer.uid,

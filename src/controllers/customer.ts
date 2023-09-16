@@ -17,7 +17,7 @@ export const fetchAllCustomers = async (req: Request, res: Response) => {
 export const findCustomerById = async (req: Request, res: Response) => {
     try {
         const user = await prisma.customer.findUnique({
-            where: { uid: req.params.id }
+            where: { id: req.params.id }
         })
         res.json(generateResponse(true, user))
     }
@@ -31,7 +31,7 @@ export const createCustomer = async (req: Request, res: Response) => {
 
         const user = await prisma.customer.create({
             data: {
-                uid: uuidv4(),
+                id: uuidv4(),
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
                 email: req.body.email,
@@ -49,7 +49,7 @@ export const createCustomer = async (req: Request, res: Response) => {
 export const updateCustomer = async (req: Request, res: Response) => {
     try {
         const updatedUser = await prisma.customer.update({
-            where: { uid: req.params.id },
+            where: { id: req.params.id },
             data: {
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
@@ -67,7 +67,7 @@ export const updateCustomer = async (req: Request, res: Response) => {
 export const deleteCustomer = async (req: Request, res: Response) => {
     try {
         const deletedUser = await prisma.customer.delete({
-            where: { uid: req.params.id }
+            where: { id: req.params.id }
         })
         res.json(generateResponse(true, deletedUser))
     }

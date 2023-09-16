@@ -25,7 +25,7 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
 
     const user = await prisma.employee.create({
         data: {
-            uid: uuidv4(),
+            id: uuidv4(),
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
@@ -50,10 +50,10 @@ export const signin = asyncHandler(async (req: Request, res: Response) => {
         if (isPasswordValid) {
 
             if (!process.env.ACCESS_TOKEN_SECRET) throw new Error("ACCESS_TOKEN_SECRET is not defined")
-            const accessToken = jwt.sign({ uid: employee.uid, role: employee.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" })
+            const accessToken = jwt.sign({ id: employee.id, role: employee.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" })
 
             if (!process.env.REFRESH_TOKEN_SECRET) throw new Error("REFRESH_TOKEN_SECRET is not defined")
-            const refreshToken = jwt.sign({ uid: employee.uid }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "1d" })
+            const refreshToken = jwt.sign({ id: employee.id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "1d" })
 
             res.cookie("JWT", refreshToken, {
                 httpOnly: true,
@@ -64,7 +64,7 @@ export const signin = asyncHandler(async (req: Request, res: Response) => {
 
             res.json(
                 generateResponse(true, {
-                    uid: employee.uid,
+                    id: employee.id,
                     accessToken,
                     first_name: employee.first_name,
                     last_name: employee.last_name,
@@ -97,7 +97,7 @@ export const refresh = (req: Request, res: Response) => {
 
             try {
                 const employee = await prisma.employee.findUnique({
-                    where: { uid: user.uid },
+                    where: { id: user.id },
                 })
 
                 if (!employee) {
@@ -105,7 +105,7 @@ export const refresh = (req: Request, res: Response) => {
                 }
 
                 if (!process.env.ACCESS_TOKEN_SECRET) throw new Error("ACCESS_TOKEN_SECRET is not defined")
-                const accessToken = jwt.sign({ uid: employee.uid, role: employee.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" })
+                const accessToken = jwt.sign({ id: employee.id, role: employee.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" })
 
                 res.json(generateResponse(true, { accessToken }))
             }
