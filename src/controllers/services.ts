@@ -21,6 +21,77 @@ export const getAllServices = async (req: Request, res: Response) => {
     }
 }
 
+export const searchService = async (req: Request, res: Response) => {
+    try {
+        if (req.body.q === undefined) {
+            res.json(generateResponse(false, null, 'Search query is required'))
+        }
+        else {
+            const searchQuery = req.body.q.toString()
+            const services = await prisma.service.findMany({
+                where: {
+                    OR: [
+                        {
+                            name: {
+                                contains: searchQuery,
+                                // mode: 'insensitive'
+                            }
+                        },
+                        {
+                            category: {
+                                contains: searchQuery,
+                                // mode: 'insensitive'
+                            }
+                        }
+                    ]
+                },
+                orderBy: {
+                    name: 'asc'
+                }
+            })
+            res.json(generateResponse(true, services))
+        }
+    } catch (err) {
+        res.json(generateResponse(false, null, err))
+    }
+}
+
+export const searchServicesByCategory = async (req: Request, res: Response) => {
+    try {
+        if (req.body.q === undefined) {
+            res.json(generateResponse(false, null, 'Search query is required'))
+        }
+        else {
+            const searchQuery = req.body.q.toString()
+
+            if (searchQuery === 'all') {
+                const services = await prisma.service.findMany({
+                    orderBy: {
+                        name: 'asc'
+                    }
+                })
+                res.json(generateResponse(true, services))
+            }
+            else {
+                const services = await prisma.service.findMany({
+                    where: {
+                        category: {
+                            contains: searchQuery,
+                            // mode: 'insensitive'
+                        }
+                    },
+                    orderBy: {
+                        name: 'asc'
+                    }
+                })
+                res.json(generateResponse(true, services))
+            }
+        }
+    } catch (err) {
+        res.json(generateResponse(false, null, err))
+    }
+}
+
 export const getServiceById = async (req: Request, res: Response) => {
     try {
         const service = await prisma.service.findUnique({

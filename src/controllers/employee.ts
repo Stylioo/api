@@ -17,10 +17,59 @@ export const fetchAllEmployees = async (req: Request, res: Response) => {
     }
 }
 
+export const searchBeauticians = async (req: Request, res: Response) => {
+    try {
+        if (req.body.q === undefined) {
+            res.json(generateResponse(false, null, 'Search query is required'))
+        } else {
+            const searchQuery = req.body.q.toString()
+            type roleType = 'ADMIN' | 'OWNER' | 'MANAGER' | 'BEAUTICIAN' | 'RECEPTIONIST'
+            console.log(searchQuery);
+
+            const beauticians = await prisma.employee.findMany({
+                where: {
+                    AND: [
+                        {
+                            role: 'BEAUTICIAN' as roleType
+                        },
+                        {
+                            OR: [
+                                {
+                                    first_name: {
+                                        contains: searchQuery,
+                                        // mode: 'insensitive'
+                                    }
+                                },
+                                {
+                                    last_name: {
+                                        contains: searchQuery,
+                                        // mode: 'insensitive'
+                                    }
+                                },
+                            ]
+                        }
+                    ]
+                }
+            })
+
+            res.json(generateResponse(true, beauticians))
+
+        }
+
+    } catch (err) {
+        res.json(generateResponse(false, null, err))
+    }
+}
+
 export const findEmployeeById = async (req: Request, res: Response) => {
     try {
         const user = await prisma.employee.findUnique({
-            where: { id: req.params.id }
+            where: {
+                id: req.params.id
+            },
+            include: {
+                qualifications: true
+            }
         })
         res.json(generateResponse(true, user))
     }

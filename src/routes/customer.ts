@@ -1,5 +1,5 @@
 import express from "express"
-import { fetchAllCustomers, findCustomerById, createCustomer, updateCustomer, deleteCustomer } from "../controllers/customer"
+import { fetchAllCustomers, findCustomerById, createCustomer, updateCustomer, deleteCustomer, searchCustomer } from "../controllers/customer"
 const router = express.Router()
 
 router.get('/health', (req, res) => {
@@ -9,6 +9,7 @@ router.get('/health', (req, res) => {
 
 router.get('/', fetchAllCustomers)
 router.post('/', createCustomer)
+router.post('/search', searchCustomer)
 router.get('/:id', findCustomerById)
 router.delete('/:id', deleteCustomer)
 router.patch('/:id', updateCustomer)

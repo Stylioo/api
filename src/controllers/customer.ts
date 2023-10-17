@@ -14,6 +14,63 @@ export const fetchAllCustomers = async (req: Request, res: Response) => {
     }
 }
 
+
+export const searchCustomer = async (req: Request, res: Response) => {
+
+    try {
+        if (req.body.q === undefined) {
+            res.json(generateResponse(false, null, 'Search query is required'))
+        }
+        else {
+            const searchQuery = req.body.q.toString()
+
+            const customers = await prisma.customer.findMany({
+                where: {
+                    OR: [
+                        {
+                            first_name: {
+                                contains: searchQuery,
+                                // mode: 'insensitive'
+                            }
+                        },
+                        {
+                            last_name: {
+                                contains: searchQuery,
+                                // mode: 'insensitive'
+                            }
+                        },
+                        {
+                            contact_no: {
+                                contains: searchQuery,
+                                // mode: 'insensitive'
+                            }
+                        }
+                    ]
+                },
+                orderBy: {
+                    first_name: 'asc'
+                },
+                select: {
+                    id: true,
+                    first_name: true,
+                    last_name: true,
+                    contact_no: true,
+                    address_line_1: true,
+                    address_line_2: true,
+                    city: true,
+                }
+            }
+
+
+            )
+            res.json(generateResponse(true, customers))
+        }
+
+    } catch (err) {
+        res.json(generateResponse(false, null, err))
+    }
+}
+
 export const findCustomerById = async (req: Request, res: Response) => {
     try {
         const user = await prisma.customer.findUnique({
@@ -31,12 +88,13 @@ export const createCustomer = async (req: Request, res: Response) => {
 
         const user = await prisma.customer.create({
             data: {
-                id: uuidv4(),
                 first_name: req.body.first_name,
                 last_name: req.body.last_name,
-                email: req.body.email,
-                password: req.body.password,
+                email: uuidv4() + '@stylioo.com',
+                password: "Pass1234#",
                 contact_no: req.body.contact_no,
+                address_line_1: req.body.address_line_1,
+                address_line_2: req.body.address_line_2,
             }
         })
         res.json(generateResponse(true, user))
