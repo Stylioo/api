@@ -8,6 +8,7 @@ router.get('/health', (req, res) => {
 })
 
 router.get('/', getAllLeaves)
+router.delete('/', deleteLeave)
 
 
 export default router
