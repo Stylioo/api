@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllServices, getServiceById, createService, deleteService, updateService, searchService, searchServicesByCategory } from "../controllers/services"
+import { getAllServices, getServiceById, createService, deleteService, updateService, searchService, searchServicesByCategory, searchSevice } from "../controllers/services"
 
 const router = express.Router()
 
@@ -15,6 +15,7 @@ router.post('/search/category', searchServicesByCategory)
 router.get('/:id', getServiceById)
 router.delete('/:id', deleteService)
 router.patch('/:id', updateService)
+router.get('/search', searchSevice)
 
 
 export default router
