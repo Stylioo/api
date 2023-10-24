@@ -135,6 +135,7 @@ export const updateService = async (req: Request, res: Response) => {
                 price: req.body.price,
                 duration: req.body.duration,
                 status: req.body.status,
+                category: req.body.category,
             }
         })
         res.json(generateResponse(true, updatedService))
