@@ -93,14 +93,7 @@ export const searchProducts = async (req: Request, res: Response) => {
             }
 
         })
-
-
-
-        if (products?.length > 0)
-            res.status(200).json(generateResponse(true, products))
-        else
-            res.status(404).json(generateResponse(false, null, 'No products found'))
-
+        res.status(200).json(generateResponse(true, products))
     } catch (err) {
         console.log(err)
         res.status(500).json(generateResponse(false, null, err))
