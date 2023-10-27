@@ -21,40 +21,40 @@ export const getAllServices = async (req: Request, res: Response) => {
     }
 }
 
-export const searchService = async (req: Request, res: Response) => {
-    try {
-        if (req.body.q === undefined) {
-            res.json(generateResponse(false, null, 'Search query is required'))
-        }
-        else {
-            const searchQuery = req.body.q.toString()
-            const services = await prisma.service.findMany({
-                where: {
-                    OR: [
-                        {
-                            name: {
-                                contains: searchQuery,
-                                // mode: 'insensitive'
-                            }
-                        },
-                        {
-                            category: {
-                                contains: searchQuery,
-                                // mode: 'insensitive'
-                            }
-                        }
-                    ]
-                },
-                orderBy: {
-                    name: 'asc'
-                }
-            })
-            res.json(generateResponse(true, services))
-        }
-    } catch (err) {
-        res.json(generateResponse(false, null, err))
-    }
-}
+// export const searchService = async (req: Request, res: Response) => {
+//     try {
+//         if (req.body.q === undefined) {
+//             res.json(generateResponse(false, null, 'Search query is required'))
+//         }
+//         else {
+//             const searchQuery = req.body.q.toString()
+//             const services = await prisma.service.findMany({
+//                 where: {
+//                     OR: [
+//                         {
+//                             name: {
+//                                 contains: searchQuery,
+//                                 // mode: 'insensitive'
+//                             }
+//                         },
+//                         {
+//                             category: {
+//                                 contains: searchQuery,
+//                                 // mode: 'insensitive'
+//                             }
+//                         }
+//                     ]
+//                 },
+//                 orderBy: {
+//                     name: 'asc'
+//                 }
+//             })
+//             res.json(generateResponse(true, services))
+//         }
+//     } catch (err) {
+//         res.json(generateResponse(false, null, err))
+//     }
+// }
 
 export const searchServicesByCategory = async (req: Request, res: Response) => {
     try {
@@ -168,22 +168,23 @@ export const deleteAll = async (req: Request, res: Response) => {
 }
 
 
-export const searchSevice = async (req: Request, res: Response) => {
+
+export const searchService = async (req: Request, res: Response) => {
     try {
         const term = req.query.term as string || ""
-        const forPage = req.query.forPage as string || await prisma.product.count()
+        const forPage = req.query.forPage as string || await prisma.service.count()
         const page = req.query.page as string || "0"
 
-        const quantityOnly = req.query.quantityOnly as string || 'false'
+        // const quantityOnly = req.query.quantityOnly as string || 'false'
 
 
-        const products = await prisma.product.findMany({
+        const services = await prisma.service.findMany({
             where: {
                 OR: [
                     { name: { contains: term } },
                     { category: { contains: term } },
-                    { brand: { contains: term } },
-                    { type: { contains: term } }
+                    // { brand: { contains: term } },
+                    // { type: { contains: term } }
                 ]
             },
             skip: Number(forPage) * Number(page),
@@ -191,32 +192,32 @@ export const searchSevice = async (req: Request, res: Response) => {
             orderBy: {
                 created_at: 'desc'
             },
-            select: {
-                id: true,
-                name: true,
-                image: true,
-                status: true,
-                category: true,
-                brand: true,
-                type: true,
-                volume: true,
-                volume_unit: true,
-                low_stock_quantity: true,
-                stock: quantityOnly === 'true' ? {
-                    select: {
-                        quantity: true,
-                    }
-                } : false
-            }
+            // select: {
+            //     id: true,
+            //     name: true,
+            //     // image: true,
+            //     // status: true,
+            //     category: true,
+            //     // brand: true,
+            //     // type: true,
+            //     // volume: true,
+            //     // volume_unit: true,
+            //     // low_stock_quantity: true,
+            //     // stock: quantityOnly === 'true' ? {
+            //     //     select: {
+            //     //         quantity: true,
+            //     //     }
+            //     // } : false
+            // }
 
         })
 
 
 
-        if (products?.length > 0)
-            res.status(200).json(generateResponse(true, products))
+        if (services?.length > 0)
+            res.status(200).json(generateResponse(true, services))
         else
-            res.status(404).json(generateResponse(false, null, 'No products found'))
+            res.status(404).json(generateResponse(false, null, 'No Services found'))
 
     } catch (err) {
         console.log(err)
@@ -224,5 +225,6 @@ export const searchSevice = async (req: Request, res: Response) => {
 
     }
 }
+
 
 
