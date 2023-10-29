@@ -37,33 +37,34 @@ model Unregistered_Customer {
 // Employee =======================================
 
 model Employee {
-  id                 String          @id @default(cuid())
-  email              String          @unique
-  password           String
-  salutation         String?         @default("NONE")
-  first_name         String
-  last_name          String
-  image              String?
-  dob                DateTime?
-  gender             String?
-  contact_no         String?         @unique
-  address_line_1     String?
-  address_line_2     String?
-  city               String?
-  district           String?
-  role               String
-  doj                DateTime?
-  fixed_salary       Float?
-  commission         Float?
-  hourly_charge_rate Float?
-  working_hours      Float?
-  leave_count        Int             @default(0)
-  status             EmployeeStatus  @default(INACTIVE)
-  created_at         DateTime        @default(now())
-  updated_at         DateTime        @updatedAt
-  leave_request      LeaveRequest[]
-  qualifications     Qualification[]
-  appointment        Appointment[]
+  id                    String          @id @default(cuid())
+  email                 String          @unique
+  password              String
+  salutation            String?         @default("NONE")
+  first_name            String
+  last_name             String
+  image                 String?
+  dob                   DateTime?
+  gender                String?
+  contact_no            String?         @unique
+  address_line_1        String?
+  address_line_2        String?
+  city                  String?
+  district              String?
+  role                  String
+  doj                   DateTime?
+  fixed_salary          Float?
+  commission            Float?
+  hourly_charge_rate    Float?
+  working_hours         Float?
+  leave_count           Int             @default(0)
+  status                EmployeeStatus  @default(INACTIVE)
+  created_at            DateTime        @default(now())
+  updated_at            DateTime        @updatedAt
+  leave_request         LeaveRequest[]
+  qualifications        Qualification[]
+  appointment           Appointment[]   @relation(name: "beautician")
+  appointment_change_by Appointment[]   @relation(name: "receptionist")
 }
 
 enum Role {
@@ -170,8 +171,12 @@ model Appointment {
   service                 Service[]
   customer                Customer? @relation(fields: [customer_id], references: [id])
   customer_id             String?
-  beautician              Employee? @relation(fields: [beautician_id], references: [id])
+  beautician              Employee? @relation(name: "beautician", fields: [beautician_id], references: [id])
   beautician_id           String?
+  status_changed_by       Employee? @relation(name: "receptionist", fields: [status_changed_by_id], references: [id])
+  status_changed_by_id    String?
+  created_at              DateTime  @default(now())
+  updated_at              DateTime  @updatedAt
 }
 
 // products =======================================

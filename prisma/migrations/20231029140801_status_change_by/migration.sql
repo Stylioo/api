@@ -107,7 +107,7 @@ CREATE TABLE `Service` (
 -- CreateTable
 CREATE TABLE `Appointment` (
     `id` VARCHAR(191) NOT NULL,
-    `date` VARCHAR(191) NOT NULL,
+    `appointment_date` DATE NOT NULL,
     `status` VARCHAR(191) NOT NULL,
     `total_price` DOUBLE NOT NULL,
     `advanced_payment_amount` DOUBLE NOT NULL,
@@ -115,6 +115,9 @@ CREATE TABLE `Appointment` (
     `duration` VARCHAR(191) NULL,
     `customer_id` VARCHAR(191) NULL,
     `beautician_id` VARCHAR(191) NULL,
+    `status_changed_by_id` VARCHAR(191) NULL,
+    `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -198,6 +201,9 @@ ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_customer_id_fkey` FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_beautician_id_fkey` FOREIGN KEY (`beautician_id`) REFERENCES `Employee`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_status_changed_by_id_fkey` FOREIGN KEY (`status_changed_by_id`) REFERENCES `Employee`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `barcode` ADD CONSTRAINT `barcode_stock_id_fkey` FOREIGN KEY (`stock_id`) REFERENCES `Stock`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

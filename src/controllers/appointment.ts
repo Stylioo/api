@@ -60,7 +60,14 @@ export const getAllAppointment = async (req: Request, res: Response) => {
                         image: true,
                     }
                 },
-                service: true
+                service: true,
+                status_changed_by: {
+                    select: {
+                        first_name: true,
+                        last_name: true,
+                        image: true,
+                    }
+                }
 
             }
 
@@ -143,7 +150,14 @@ export const searchAppointment = async (req: Request, res: Response) => {
                         image: true,
                     }
                 },
-                service: true
+                service: true,
+                status_changed_by: {
+                    select: {
+                        first_name: true,
+                        last_name: true,
+                        image: true,
+                    }
+                }
 
             }
         })
@@ -169,6 +183,7 @@ export const GetAppoitmentById = async (req: Request, res: Response) => {
 
 export const createAppointment = async (req: Request, res: Response) => {
     try {
+
         const appointment = await prisma.appointment.create({
             data: {
                 appointment_date: new Date(req.body.date),
@@ -185,7 +200,7 @@ export const createAppointment = async (req: Request, res: Response) => {
                 },
                 beautician: {
                     connect: { id: req.body.beautician_id }
-                }
+                },
             }
         })
 
@@ -244,7 +259,10 @@ export const updateStatus = async (req: Request, res: Response) => {
         const appointment = await prisma.appointment.update({
             where: { id: req.params.id },
             data: {
-                status: req.body.status
+                status: req.body.status,
+                status_changed_by: {
+                    connect: { id: req.body.status_changed_by }
+                }
             }
         })
         res.json(generateResponse(true, appointment))
