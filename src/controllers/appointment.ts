@@ -169,17 +169,6 @@ export const searchAppointment = async (req: Request, res: Response) => {
     }
 }
 
-export const GetAppoitmentById = async (req: Request, res: Response) => {
-    // try {
-    //     const service = await prisma.appointment.findUnique({
-    //         where: { id: req.params.id }
-    //     })
-    //     res.json(generateResponse(true, service))
-    // }
-    // catch (err) {
-    //     res.json(generateResponse(false, null, err))
-    // }
-}
 
 export const createAppointment = async (req: Request, res: Response) => {
     try {
