@@ -10,7 +10,13 @@ const prisma = new PrismaClient()
 
 export const fetchAllEmployees = async (req: Request, res: Response) => {
     try {
-        const users = await prisma.employee.findMany()
+        const users = await prisma.employee.findMany({
+            where: {
+                role: {
+                    not: 'ADMIN'
+                }
+            }
+        })
         res.json(generateResponse(true, users))
     } catch (err) {
         res.json(generateResponse(false, null, err))
@@ -82,9 +88,7 @@ export const createEmployee = async (req: Request, res: Response) => {
     try {
 
         const randomPassword = generateRandomString(15)
-        const passwordHash = await bcrypt.hash('pass1234', 10)
-
-
+        const passwordHash = await bcrypt.hash(randomPassword, 10)
 
         const user = await prisma.employee.create({
             data: {
@@ -121,14 +125,12 @@ export const createEmployee = async (req: Request, res: Response) => {
             }
         })
 
-        // console.log(req.body.email);
-        // const emailTemplate = generateMailForSendPassword(req.body.email, randomPassword)
-        // const emailTemplate = "<h1>this is test</h1>"
-        // const emailResponse = await sendMail(req.body.email, 'Login Credentials for Stylioo', emailTemplate)
-        // // console.log(emailResponse);
 
         if (user) {
-            res.json(generateResponse(true, user))
+            const emailTemplate = generateMailForSendPassword(req.body.email, randomPassword)
+            const emailResponse = await sendMail(req.body.email, 'Login Credentials for Stylioo', emailTemplate)
+
+            res.json(generateResponse(true, { ...user, ...emailResponse }))
         } else {
             res.json(generateResponse(false, null, 'Error in creating user'))
         }
@@ -189,7 +191,8 @@ export const fetchEmployeesByRole = async (req: Request, res: Response) => {
                 first_name: true,
                 last_name: true,
                 email: true,
-                role: true
+                role: true,
+                image: true,
             }
         })
         res.json(generateResponse(true, users))

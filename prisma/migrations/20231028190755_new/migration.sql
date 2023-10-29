@@ -36,7 +36,7 @@ CREATE TABLE `Employee` (
     `id` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `salutation` ENUM('NONE', 'MR', 'MS', 'MRS') NULL DEFAULT 'NONE',
+    `salutation` VARCHAR(191) NULL DEFAULT 'NONE',
     `first_name` VARCHAR(191) NOT NULL,
     `last_name` VARCHAR(191) NOT NULL,
     `image` VARCHAR(191) NULL,
@@ -48,7 +48,7 @@ CREATE TABLE `Employee` (
     `city` VARCHAR(191) NULL,
     `district` VARCHAR(191) NULL,
     `role` VARCHAR(191) NOT NULL,
-    `doj` VARCHAR(191) NULL,
+    `doj` DATETIME(3) NULL,
     `fixed_salary` DOUBLE NULL,
     `commission` DOUBLE NULL,
     `hourly_charge_rate` DOUBLE NULL,
@@ -109,14 +109,12 @@ CREATE TABLE `Appointment` (
     `id` VARCHAR(191) NOT NULL,
     `date` VARCHAR(191) NOT NULL,
     `status` VARCHAR(191) NOT NULL,
-    `services` VARCHAR(191) NOT NULL,
-    `beautician` VARCHAR(191) NOT NULL,
-    `beautician_id` VARCHAR(191) NOT NULL,
-    `customer` VARCHAR(191) NOT NULL,
-    `customer_id` VARCHAR(191) NOT NULL,
     `total_price` DOUBLE NOT NULL,
+    `advanced_payment_amount` DOUBLE NOT NULL,
     `start_time` VARCHAR(191) NULL,
     `duration` VARCHAR(191) NULL,
+    `customer_id` VARCHAR(191) NULL,
+    `beautician_id` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -180,11 +178,26 @@ CREATE TABLE `Supplier` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `_AppointmentToService` (
+    `A` VARCHAR(191) NOT NULL,
+    `B` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `_AppointmentToService_AB_unique`(`A`, `B`),
+    INDEX `_AppointmentToService_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `LeaveRequest` ADD CONSTRAINT `LeaveRequest_employee_id_fkey` FOREIGN KEY (`employee_id`) REFERENCES `Employee`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Qualification` ADD CONSTRAINT `Qualification_employee_id_fkey` FOREIGN KEY (`employee_id`) REFERENCES `Employee`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_customer_id_fkey` FOREIGN KEY (`customer_id`) REFERENCES `Customer`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Appointment` ADD CONSTRAINT `Appointment_beautician_id_fkey` FOREIGN KEY (`beautician_id`) REFERENCES `Employee`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `barcode` ADD CONSTRAINT `barcode_stock_id_fkey` FOREIGN KEY (`stock_id`) REFERENCES `Stock`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
@@ -194,3 +207,9 @@ ALTER TABLE `Stock` ADD CONSTRAINT `Stock_product_id_fkey` FOREIGN KEY (`product
 
 -- AddForeignKey
 ALTER TABLE `Stock` ADD CONSTRAINT `Stock_supplier_id_fkey` FOREIGN KEY (`supplier_id`) REFERENCES `Supplier`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_AppointmentToService` ADD CONSTRAINT `_AppointmentToService_A_fkey` FOREIGN KEY (`A`) REFERENCES `Appointment`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_AppointmentToService` ADD CONSTRAINT `_AppointmentToService_B_fkey` FOREIGN KEY (`B`) REFERENCES `Service`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -10,17 +10,17 @@ datasource db {
 // Customer =======================================
 
 model Customer {
-  id             String  @id @default(cuid())
-  email          String  @unique
+  id             String        @id @default(cuid())
+  email          String        @unique
   password       String
   first_name     String
   last_name      String
-  contact_no     String? @unique
+  contact_no     String?       @unique
   address_line_1 String?
   address_line_2 String?
   city           String?
   district       String?
-  // Appointment    Appointment[]
+  appointment    Appointment[]
 }
 
 model Unregistered_Customer {
@@ -63,7 +63,7 @@ model Employee {
   updated_at         DateTime        @updatedAt
   leave_request      LeaveRequest[]
   qualifications     Qualification[]
-  // Appointment    Appointment[]
+  appointment        Appointment[]
 }
 
 enum Role {
@@ -145,37 +145,33 @@ model Qualification {
 // Service =======================================
 
 model Service {
-  id          String   @id @default(cuid())
+  id          String        @id @default(cuid())
   name        String
   category    String
-  description String?  @db.Text
+  description String?       @db.Text
   price       Float
   duration    String
   status      String
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  // Appointments Appointment[]
+  created_at  DateTime      @default(now())
+  updated_at  DateTime      @updatedAt
+  appointment Appointment[]
 }
 
 // Appointment =======================================
 
 model Appointment {
-  id            String  @id @default(cuid())
-  date          String
-  status        String
-  services      String
-  beautician    String
-  beautician_id String
-  customer      String
-  customer_id   String
-  total_price   Float
-  start_time    String?
-  duration      String?
-  // customer    Customer  @relation(fields: [customer_id], references: [uid])
-  // customer_id String
-  // employee    Employee? @relation(fields: [employee_id], references: [uid])
-  // employee_id String?
-  // services    Service[]
+  id                      String    @id @default(cuid())
+  appointment_date        DateTime  @db.Date
+  status                  String
+  total_price             Float
+  advanced_payment_amount Float
+  start_time              String?
+  duration                String?
+  service                 Service[]
+  customer                Customer? @relation(fields: [customer_id], references: [id])
+  customer_id             String?
+  beautician              Employee? @relation(fields: [beautician_id], references: [id])
+  beautician_id           String?
 }
 
 // products =======================================
