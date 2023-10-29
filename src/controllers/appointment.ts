@@ -6,21 +6,22 @@ import { v4 as uuidv4 } from 'uuid'
 import moment from "moment"
 
 
-const getSelector = (range: string) => {
-    if (range === 'today') {
+const getSelector = (type: string) => {
+    if (type === 'upcomming') {
         return {
-            gte: moment().startOf('day').toDate(),
-            lt: moment().endOf('day').toDate()
+            status: {
+                notIn: ["paid", "canceled"]
+            }
         }
     }
-    else if (range === 'upcomming') {
+    else if (type === 'completed') {
         return {
-            gt: moment().startOf('day').toDate(),
+            status: 'paid'
         }
     }
-    else if (range === 'past') {
+    else if (type === 'canceled') {
         return {
-            lt: moment().startOf('day').toDate(),
+            status: 'canceled'
         }
     }
     else {
@@ -33,14 +34,14 @@ const prisma = new PrismaClient()
 export const getAllAppointment = async (req: Request, res: Response) => {
     try {
         // find all service sort decesding order buy updatedTime
-        const range = req.query.range as string || ""
+        const type = req.query.type as string || ""
         const appointments = await prisma.appointment.findMany({
             orderBy: {
                 appointment_date: 'desc'
             },
-            where: {
-                appointment_date: getSelector(range)
-            },
+
+            where: getSelector(type),
+
             include: {
                 customer: {
                     select: {
@@ -73,14 +74,12 @@ export const getAllAppointment = async (req: Request, res: Response) => {
 export const searchAppointment = async (req: Request, res: Response) => {
     try {
         const term = req.query.term as string || ""
-        const range = req.query.range as string || ""
+        const type = req.query.type as string || ""
 
         const appointment = await prisma.appointment.findMany({
             where: {
                 AND: [
-                    {
-                        appointment_date: getSelector(range)
-                    },
+                    getSelector(type),
                     {
                         OR: [
                             {
@@ -240,3 +239,18 @@ export const deleteAll = async (req: Request, res: Response) => {
     }
 }
 
+export const updateStatus = async (req: Request, res: Response) => {
+    try {
+        const appointment = await prisma.appointment.update({
+            where: { id: req.params.id },
+            data: {
+                status: req.body.status
+            }
+        })
+        res.json(generateResponse(true, appointment))
+
+    } catch (err) {
+        console.log(err);
+        res.json(generateResponse(false, null, err))
+    }
+}
