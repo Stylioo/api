@@ -160,15 +160,13 @@ export const updateEmployee = async (req: Request, res: Response) => {
 }
 
 export const deleteEmployee = async (req: Request, res: Response) => {
-
     try {
         const deletedUser = await prisma.employee.delete({
-            where: { id: req.params.id }, 
+            where: { id: req.params.id }
         })
         res.json(generateResponse(true, deletedUser))
     }
     catch (err) {
-        console.log(err);
         res.json(generateResponse(false, null, err))
     }
 }

@@ -118,7 +118,7 @@ model Qualification {
   institute     String
   start_date    DateTime?
   end_date      DateTime?
-  employee      Employee  @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+  employee      Employee  @relation(fields: [employee_id], references: [id])
   employee_id   String
 }
 
