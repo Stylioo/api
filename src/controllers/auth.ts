@@ -37,6 +37,10 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
 })
 
 export const signin = asyncHandler(async (req: Request, res: Response) => {
+
+    console.log("data", req.body);
+
+
     const employee = await prisma.employee.findUnique({
         where: { email: req.body.email },
     })
