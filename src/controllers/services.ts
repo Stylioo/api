@@ -238,9 +238,12 @@ export const searchService = async (req: Request, res: Response) => {
 
 
         if (services?.length > 0)
+            
             res.status(200).json(generateResponse(true, services))
         else
-            res.status(404).json(generateResponse(false, null, 'No Services found'))
+            res.status(200).json(generateResponse(true, []))
+
+        // res.status(404).json(generateResponse(false, null, 'No Services found'))
 
     } catch (err) {
         console.log(err)
