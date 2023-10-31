@@ -113,7 +113,7 @@ export const createService = async (req: Request, res: Response) => {
                 name: req.body.name,
                 description: req.body.description,
                 price: parseFloat(req.body.price),
-                duration: req.body.duration,
+                duration: parseInt(req.body.duration),
                 status: req.body.status,
             }
         })

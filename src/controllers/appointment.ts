@@ -180,7 +180,7 @@ export const createAppointment = async (req: Request, res: Response) => {
                 total_price: req.body.total,
                 advanced_payment_amount: req.body.advanced_payment_amount,
                 start_time: req.body.startTime,
-                duration: req.body.duration,
+                duration: parseInt(req.body.duration),
                 service: {
                     connect: req.body.services.map((service: any) => ({ id: service }))
                 },
@@ -192,7 +192,6 @@ export const createAppointment = async (req: Request, res: Response) => {
                 },
             }
         })
-
         res.json(generateResponse(true, appointment))
     }
     catch (err) {
@@ -256,6 +255,28 @@ export const updateStatus = async (req: Request, res: Response) => {
         })
         res.json(generateResponse(true, appointment))
 
+    } catch (err) {
+        console.log(err);
+        res.json(generateResponse(false, null, err))
+    }
+}
+
+export const getAppointmentDateAndTimeByBeautician = async (req: Request, res: Response) => {
+    try {
+        const appointments = await prisma.appointment.findMany({
+            where: {
+                beautician_id: req.params.id,
+            },
+            select: {
+                id: true,
+                appointment_date: true,
+                start_time: true,
+                duration: true,
+            }
+        })
+        console.log(appointments);
+
+        res.json(generateResponse(true, appointments))
     } catch (err) {
         console.log(err);
         res.json(generateResponse(false, null, err))

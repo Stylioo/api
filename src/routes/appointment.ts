@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllAppointment, createAppointment, DeleteAppoitnment, updateAppoitnment, searchAppointment, updateStatus } from "../controllers/appointment"
+import { getAllAppointment, createAppointment, DeleteAppoitnment, updateAppoitnment, searchAppointment, updateStatus, getAppointmentDateAndTimeByBeautician } from "../controllers/appointment"
 
 const router = express.Router()
 
@@ -12,6 +12,7 @@ router.get('/', getAllAppointment)
 router.post('/', createAppointment)
 router.get('/search', searchAppointment)
 router.patch('/status/:id', updateStatus)
+router.get('/dateAndTime/:id', getAppointmentDateAndTimeByBeautician)
 router.delete('/:id', DeleteAppoitnment)
 router.patch('/:id', updateAppoitnment)
 
