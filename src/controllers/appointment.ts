@@ -260,6 +260,21 @@ export const updateStatus = async (req: Request, res: Response) => {
         res.json(generateResponse(false, null, err))
     }
 }
+export const updateStatusByCustomer = async (req: Request, res: Response) => {
+    try {
+        const appointment = await prisma.appointment.update({
+            where: { id: req.params.id },
+            data: {
+                status: req.body.status,
+            }
+        })
+        res.json(generateResponse(true, appointment))
+
+    } catch (err) {
+        console.log(err);
+        res.json(generateResponse(false, null, err))
+    }
+}
 
 export const getAppointmentDateAndTimeByBeautician = async (req: Request, res: Response) => {
     try {
