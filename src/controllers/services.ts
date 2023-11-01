@@ -9,8 +9,6 @@ const prisma = new PrismaClient()
 
 export const getAllServices = async (req: Request, res: Response) => {
     try {
-        // find all service sort decesding order buy updatedTime
-
         const services = await prisma.service.findMany({
             orderBy: {
                 updated_at: 'desc'
