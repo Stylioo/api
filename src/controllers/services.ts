@@ -8,8 +8,6 @@ const prisma = new PrismaClient()
 
 export const getAllServices = async (req: Request, res: Response) => {
 
-
-
     try {
         // find all service sort decesding order buy updatedTime
         const searchValue = () => req.query.term === "" ? undefined : parseInt(req.query.term as string)
