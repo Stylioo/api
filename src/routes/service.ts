@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllServices, getServiceById, createService, deleteService, updateService, searchService, searchServicesByCategory } from "../controllers/services"
+import { getAllServices, getServiceById, createService, deleteService, updateService, searchService, searchServicesByCategory, searchServiceByManager, fetchAllServices } from "../controllers/services"
 
 const router = express.Router()
 
@@ -8,11 +8,12 @@ router.get('/health', (req, res) => {
 })
 
 
-router.get('/fetch', getAllServices)
+router.get('/', getAllServices)
 router.post('/', createService)
-// router.post('/search', searchService)
-// router.post('/search/category', searchServicesByCategory)
-router.get('/search', searchService)
+router.get('/fetch', fetchAllServices)
+router.post('/search', searchService)
+router.post('/search/category', searchServicesByCategory)
+router.get('/searchServiceByManager', searchServiceByManager)
 router.get('/:id', getServiceById)
 router.delete('/:id', deleteService)
 router.patch('/:id', updateService)

@@ -6,71 +6,77 @@ import { v4 as uuidv4 } from 'uuid'
 
 const prisma = new PrismaClient()
 
-export const getAllServices = async (req: Request, res: Response) => {
 
+export const getAllServices = async (req: Request, res: Response) => {
     try {
         // find all service sort decesding order buy updatedTime
-        const searchValue = () => req.query.term === "" ? undefined : parseInt(req.query.term as string)
-           
+
         const services = await prisma.service.findMany({
             orderBy: {
                 updated_at: 'desc'
-            },
-            take: searchValue()
-            
+            }
         })
-        // let serviceCount = []
-        // for(let i=0; i<searchValue; i++){
-        //     serviceCount[i] = services[i]
-        //     console.log("for running")
-
-
-        // }
-
-        // console.log(serviceCount)
-
-
-
         res.json(generateResponse(true, services))
     } catch (err) {
         res.json(generateResponse(false, null, err))
     }
 }
 
-// export const searchService = async (req: Request, res: Response) => {
-//     try {
-//         if (req.body.q === undefined) {
-//             res.json(generateResponse(false, null, 'Search query is required'))
-//         }
-//         else {
-//             const searchQuery = req.body.q.toString()
-//             const services = await prisma.service.findMany({
-//                 where: {
-//                     OR: [
-//                         {
-//                             name: {
-//                                 contains: searchQuery,
-//                                 // mode: 'insensitive'
-//                             }
-//                         },
-//                         {
-//                             category: {
-//                                 contains: searchQuery,
-//                                 // mode: 'insensitive'
-//                             }
-//                         }
-//                     ]
-//                 },
-//                 orderBy: {
-//                     name: 'asc'
-//                 }
-//             })
-//             res.json(generateResponse(true, services))
-//         }
-//     } catch (err) {
-//         res.json(generateResponse(false, null, err))
-//     }
-// }
+export const fetchAllServices = async (req: Request, res: Response) => {
+
+    try {
+        // find all service sort decesding order buy updatedTime
+        const searchValue = () => req.query.term === "" ? undefined : parseInt(req.query.term as string)
+
+        const services = await prisma.service.findMany({
+            orderBy: {
+                updated_at: 'desc'
+            },
+            take: searchValue()
+
+        })
+        res.json(generateResponse(true, services))
+    } catch (err) {
+        console.log(err);
+
+        res.json(generateResponse(false, null, err))
+    }
+}
+
+export const searchService = async (req: Request, res: Response) => {
+    try {
+        if (req.body.q === undefined) {
+            res.json(generateResponse(false, null, 'Search query is required'))
+        }
+        else {
+            const searchQuery = req.body.q.toString()
+            const services = await prisma.service.findMany({
+                where: {
+                    OR: [
+                        {
+                            name: {
+                                contains: searchQuery,
+                                // mode: 'insensitive'
+                            }
+                        },
+                        {
+                            category: {
+                                contains: searchQuery,
+                                // mode: 'insensitive'
+                            }
+                        }
+                    ]
+                },
+                orderBy: {
+                    name: 'asc'
+                }
+            })
+            res.json(generateResponse(true, services))
+        }
+    } catch (err) {
+        res.json(generateResponse(false, null, err))
+    }
+}
 
 export const searchServicesByCategory = async (req: Request, res: Response) => {
     try {
@@ -94,7 +100,8 @@ export const searchServicesByCategory = async (req: Request, res: Response) => {
                         category: {
                             contains: searchQuery,
                             // mode: 'insensitive'
-                        }
+                        },
+
                     },
                     orderBy: {
                         name: 'asc'
@@ -185,14 +192,14 @@ export const deleteAll = async (req: Request, res: Response) => {
 
 
 
-export const searchService = async (req: Request, res: Response) => {
+export const searchServiceByManager = async (req: Request, res: Response) => {
     console.log("test");
     try {
         const term = req.query.term as string || ""
         const forPage = req.query.forPage as string || await prisma.service.count()
         const page = req.query.page as string || "0"
 
-        
+
 
         // const quantityOnly = req.query.quantityOnly as string || 'false'
 
@@ -236,7 +243,7 @@ export const searchService = async (req: Request, res: Response) => {
 
 
         if (services?.length > 0)
-            
+
             res.status(200).json(generateResponse(true, services))
         else
             res.status(200).json(generateResponse(true, []))
