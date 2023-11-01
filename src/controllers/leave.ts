@@ -30,3 +30,8 @@ export const getAllLeaves = async (req: Request, res: Response) => {
 
     }
 }
+
+
+export const deleteLevel = (req, res) => {
+}
+
