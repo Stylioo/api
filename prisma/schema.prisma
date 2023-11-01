@@ -151,7 +151,7 @@ model Service {
   category    String
   description String?       @db.Text
   price       Float
-  duration    String
+  duration    Int
   status      String
   created_at  DateTime      @default(now())
   updated_at  DateTime      @updatedAt
@@ -167,7 +167,7 @@ model Appointment {
   total_price             Float
   advanced_payment_amount Float
   start_time              String?
-  duration                String?
+  duration                Int?
   service                 Service[]
   customer                Customer? @relation(fields: [customer_id], references: [id])
   customer_id             String?

@@ -163,7 +163,7 @@ export const deleteEmployee = async (req: Request, res: Response) => {
 
     try {
         const deletedUser = await prisma.employee.delete({
-            where: { id: req.params.id }, 
+            where: { id: req.params.id },
         })
         res.json(generateResponse(true, deletedUser))
     }
@@ -195,7 +195,7 @@ export const fetchEmployeesByRole = async (req: Request, res: Response) => {
                 email: true,
                 role: true,
                 image: true,
-            }
+            },
         })
         res.json(generateResponse(true, users))
     } catch (err) {

@@ -3,7 +3,6 @@ import genarateJWT from "../utils/jwt"
 
 import { Request, Response } from "express"
 import { PrismaClient } from "@prisma/client"
-import { v4 as uuidv4 } from "uuid"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 import dotenv from "dotenv"
@@ -37,9 +36,6 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
 })
 
 export const signin = asyncHandler(async (req: Request, res: Response) => {
-
-    console.log("data", req.body);
-
 
     const employee = await prisma.employee.findUnique({
         where: { email: req.body.email },
@@ -128,3 +124,76 @@ export const signout = (req: Request, res: Response) => {
     res.status(200).json(generateResponse(true, null, "Signout successful"))
 
 }
+
+
+export const customerSignin = async (req: Request, res: Response) => {
+    try {
+        const customer = await prisma.customer.findUnique({
+            where: { email: req.body.email },
+        })
+
+        console.log(customer)
+        return
+
+
+        // if (customer) {
+
+        //     const isPasswordValid = await bcrypt.compare(
+        //         req.body.password,
+        //         customer.password
+        //     )
+        //     if (isPasswordValid) {
+
+        //         if (!process.env.ACCESS_TOKEN_SECRET) throw new Error("ACCESS_TOKEN_SECRET is not defined")
+        //         const accessToken = jwt.sign({ id: customer.id, role: customer.role }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1m" })
+
+        //         if (!process.env.REFRESH_TOKEN_SECRET) throw new Error("REFRESH_TOKEN_SECRET is not defined")
+        //         const refreshToken = jwt.sign({ id: customer.id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "1d" })
+
+        //         res.cookie("JWT", refreshToken, {
+        //             httpOnly: true,
+        //             secure: true,
+        //             sameSite: "none",
+        //             maxAge: 7 * 1000 * 60 * 60 * 24,
+        //         })
+
+        //         res.json(
+        //             generateResponse(true, {
+        //                 id: customer.id,
+        //                 accessToken,
+        //                 refreshToken,
+        //                 first_name: customer.first_name,
+        //                 last_name: customer.last_name,
+        //                 email: customer.email,
+        //                 role: customer.role,
+        //                 image: customer.image
+        //             })
+        //         )
+        //     } else {
+        //         res.json(generateResponse(false, null, "Invalid email or password"))
+        //     }
+        // } else {
+        //     res.json(generateResponse(false, null, "Invalid email or password"))
+        // }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json(generateResponse(false, null, err))
+    }
+}
+
+
+// export const forgotPassword = asyncHandler(async (req: Request, res: Response) => {
+//     const employee = await prisma.employee.findUnique({
+//         where: { email: req.body.email }
+//     })
+
+//     if (!employee) res.status(400).json(generateResponse(false, null, 'Email does not exist'))
+
+//     const token = genarateJWT(employee.id, 600)
+
+//     const link = `${process.env.CLIENT_URL}/reset-password/${token}`
+
+//     res.status(200).json(generateResponse(true, link))
+
+// })
