@@ -8,10 +8,11 @@ router.get('/health', (req, res) => {
 })
 
 
-router.get('/', getAllServices)
+router.get('/fetch', getAllServices)
 router.post('/', createService)
-router.post('/search', searchService)
-router.post('/search/category', searchServicesByCategory)
+// router.post('/search', searchService)
+// router.post('/search/category', searchServicesByCategory)
+router.get('/search', searchService)
 router.get('/:id', getServiceById)
 router.delete('/:id', deleteService)
 router.patch('/:id', updateService)
