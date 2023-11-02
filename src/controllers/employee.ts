@@ -13,7 +13,7 @@ export const fetchAllEmployees = async (req: Request, res: Response) => {
         const users = await prisma.employee.findMany({
             where: {
                 role: {
-                    not: 'ADMIN'
+                    notIn: ['ADMIN', 'ANY']
                 }
             }
         })
